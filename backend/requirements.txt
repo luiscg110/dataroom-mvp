@@ -1,5 +1,4 @@
 # backend/requirements.txt
-gunicorn==21.2.0
 Flask==3.0.3
 Flask-Cors==4.0.1
 SQLAlchemy==2.0.32
@@ -7,3 +6,9 @@ psycopg[binary]>=3.1
 python-dotenv==1.0.1
 PyJWT==2.8.0
 pdfminer.six>=20231228
+
+# Prod
+gunicorn==21.2.0; sys_platform != "win32"
+
+# Local
+waitress==2.1.2; sys_platform == "win32"
