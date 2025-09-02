@@ -1,0 +1,50 @@
+/* src/styles.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Color scheme correcto para formularios nativos */
+:root { color-scheme: light; }
+.dark { color-scheme: dark; }
+
+/* Fondo y texto global */
+body { @apply bg-slate-50 text-slate-900; }
+.dark body { @apply bg-slate-900 text-slate-100; }
+
+/* Topbar y contenedor */
+.topbar { @apply border-b border-slate-200 bg-white; }
+.dark .topbar { @apply border-slate-800 bg-slate-900; }
+
+.container-app { @apply max-w-6xl mx-auto px-4; }
+
+/* Tarjetas reutilizadas */
+.card { @apply rounded-2xl border border-slate-200 bg-white; }
+.dark .card { @apply border-slate-700 bg-slate-800; }
+
+/* Botón “primario” */
+.btn-brand { 
+  @apply inline-flex items-center justify-center rounded-xl px-3 py-2 
+  bg-brand-600 text-white hover:bg-brand-500 disabled:opacity-50; 
+}
+
+/* Inputs/selects/textareas globales */
+input,
+select,
+textarea {
+  @apply rounded-xl border px-3 py-2 outline-none 
+  bg-white border-slate-300 text-slate-900 placeholder:text-slate-400;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+  @apply bg-slate-900 border-slate-600 text-white placeholder:text-slate-400;
+}
+
+/* Botones “neutros” */
+.btn-neutral {
+  @apply rounded-xl border px-3 py-2 bg-white hover:bg-slate-50 border-slate-300;
+}
+.dark .btn-neutral {
+  @apply bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-100;
+}
