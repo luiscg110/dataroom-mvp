@@ -44,6 +44,10 @@ def create_app():
         except Exception:
             return jsonify({"error": "unauthorized"}), 401
 
+    @app.route("/")
+    def index():
+        return jsonify({"status": "ok", "message": "Backend running"})
+
     register_controllers(app)
     return app
 
