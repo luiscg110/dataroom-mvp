@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Topbar from "@/components/Topbar";
-import DataroomList from "@/components/DataroomList";
 import DataroomView from "@/components/DataroomView";
 import Login from "@/components/Login";
 import type { Dataroom, ID } from "@/types";
@@ -14,6 +13,7 @@ type View =
 
 export default function App() {
   const { token } = useAuth();
+
   const [view, setView] = useState<View>({ kind: "list" });
   const [rooms, setRooms] = useState<Dataroom[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,16 +37,34 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (token) loadRooms();
+    setView({ kind: "list" });
+    setRooms([]);
+    setErr(null);
+    if (token) {
+      loadRooms();
+    } else {
+      setLoading(false);
+    }
   }, [token]);
 
   const openRoom = async (id: ID) => {
-    const d = await getDataroom(id);
-    setView({ kind: "room", dataroom: d });
+    try {
+      const d = await getDataroom(id);
+      setView({ kind: "room", dataroom: d });
+    } catch (e: any) {
+      const msg = String(e?.message || "");
+      if (/HTTP\s+401/.test(msg) || /HTTP\s+404/.test(msg)) {
+        setView({ kind: "list" });
+        await loadRooms();
+        setErr("This dataroom is not available for the current user.");
+      } else {
+        setErr(e?.message ?? "Failed to open dataroom");
+      }
+    }
   };
 
   if (!token) {
-    return <Login onDone={() => { /* el efecto de token cargará las salas */ }} />;
+    return <Login onDone={() => {}} />;
   }
 
   return (
@@ -55,6 +73,7 @@ export default function App() {
 
       {view.kind === "list" && (
         <div className="container-app py-10">
+          {err && <div className="text-red-600 text-sm mb-3">{err}</div>}
           <DataroomListPaginated onOpen={openRoom} />
         </div>
       )}
